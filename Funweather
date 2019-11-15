@@ -1,44 +1,99 @@
-# -*- coding: utf-8 -*-
-"""
-Fun Weather App 
 
-"""
+'''
+India Wesley
+003
+11/11/19
+'''
 
-#importing All modules
-import tkinter as tk
+#import tkinter as tk
+import tkinter as tk 
 
-#creating functions for buttons
+import requests
 
-def exit_window():
-    root.destroy()
-    exit()
+#Window size
+HEIGHT = 570
+WIDTH = 950
 
-def get_weather():
-    pass
+# key: 0eb79d7da8b67e9c12a8515317c40f70
+
+#takes in the weather json
+def format_response(weather):
+	try:
+		name = weather['name']
+		desc = weather['weather'][0]['description']
+		temp = weather['main']['temp']
+
+		final_str = 'City: %s \nConditions: %s \nTemperature (°F): %s' % (name, desc, temp)
+	except:
+		final_str = 'There was a problem getting that information'
+
+	return final_str
+
+#weather call
+def get_weather(city):
+	weather_key = '0eb79d7da8b67e9c12a8515317c40f70'
+	url = 'https://api.openweathermap.org/data/2.5/weather'
+	params = {'APPID': weather_key, 'q': city, 'units': 'imperial'}
+	response = requests.get(url, params=params)
+	weather = response.json()
+
+	label['text'] = format_response(weather)
 
 
+def get_joke(city):
+    print("Button Pressed. No Jokes Here.")
+    
 
-#creating the window 
+#root window for placing everything
 root = tk.Tk()
-root.geometry('500x600')
 
-main = tk.Frame(root,bg='#ccf2ff')
-main.place(relx = .2, rely = .2,relheight = .6,relwidth = .6)
-#user input and output boring weather
-user_entry = tk.Entry(main)
-user_entry.place(relx = .1,rely = .1)
-#creating the buttons for the boring weather interface
+#Bigger window to work with
+canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
+canvas.pack()
 
-get_weather = tk.Button(main,text='Get Weather',command = get_weather)
-get_weather.place(relx =0.55, rely = .09)
-
-exit_window = tk.Button(main,text = 'Exit',command = exit_window)
-exit_window.place(relx = .8, rely = .9)
-
-#Desplays the weather
-weather = tk.Label(main, bg='white')
-weather.place(relx = .1, rely = .2,relheight = .6, relwidth = .8)
+#background_image = tk.PhotoImage(file='wall_FC5.png')
+#background_label = tk.Label(root, image=background_image)
+#background_label.place(relwidth=1, relheight=1)
 
 
-#running the program
-root.mainloop()
+
+#Frame1
+frame = tk.Frame(root, bg='#ed112a', bd=4)
+frame.place(relx=0.5, rely=0.07, relwidth=0.75, relheight=0.1, anchor='n')
+
+#frame1 entry box
+entry = tk.Entry(frame, font=40)
+entry.place(relx=0.02, rely=0.28, relwidth=0.65, relheight=0.5)
+
+#Frame1 button
+button = tk.Button(frame, text="Get The Weather", font=70, command=lambda: get_weather(entry.get()))
+button.place(relx=0.7, relheight=1, relwidth=0.3)
+
+
+
+#Frame2
+frame2 = tk.Frame(root, bg='#b211ed', bd=4)
+frame2.place(relx=0.5, rely=0.85, relwidth=0.75, relheight=0.1, anchor='n')
+
+#frame2 entry box
+entry2 = tk.Entry(frame2, font=40)
+entry2.place(relx=0.02, rely=0.25, relwidth=0.65, relheight=0.5)
+
+#Frame1 button
+button2 = tk.Button(frame2, text="Get A Joke", font=70, command=lambda: get_joke(entry2.get()))
+button2.place(relx=0.7, relheight=1, relwidth=0.3)
+
+
+
+lower_frame = tk.Frame(root, bg='#ed112a', bd=7)
+lower_frame.place(relx=0.5, rely=0.25, relwidth=0.60, relheight=0.25, anchor='n')
+
+label = tk.Label(lower_frame)
+label.config(font=("Courier", 20))
+label.place( relwidth=1, relheight=1)
+
+root.mainloop() #to run app
+
+
+
+
