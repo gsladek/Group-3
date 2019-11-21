@@ -1,1 +1,105 @@
 
+'''
+India Wesley
+Gloria Sladek
+003
+11/20/19
+'''
+
+#import tkinter as tk
+import tkinter as tk 
+
+import requests
+
+#Window size
+HEIGHT = 570
+WIDTH = 950
+
+# key: 0eb79d7da8b67e9c12a8515317c40f70
+
+#takes in the weather json
+def format_response(weather):
+	try:
+		name = weather['name']
+		desc = weather['weather'][0]['description']
+		temp = weather['main']['temp']
+
+		final_str = 'City: %s \nConditions: %s \nTemperature (°F): %s' % (name, desc, temp)
+	except:
+		final_str = 'There was a problem getting that information'
+
+	return final_str
+
+#weather call
+def get_weather(city):
+	weather_key = '0eb79d7da8b67e9c12a8515317c40f70'
+	url = 'https://api.openweathermap.org/data/2.5/weather'
+	params = {'APPID': weather_key, 'q': city, 'units': 'imperial'}
+	response = requests.get(url, params=params)
+	weather = response.json()
+
+	label['text'] = format_response(weather)
+
+
+def get_joke(city):
+    print("Button Pressed. No Jokes Here.")
+
+#root window for placing everything
+root = tk.Tk()
+
+#Bigger window to work with
+canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
+canvas.pack()
+
+#background_image = tk.PhotoImage(file='wall_FC5.png')
+#background_label = tk.Label(root, image=background_image)
+#background_label.place(relwidth=1, relheight=1)
+
+
+
+#Frame1
+frame = tk.Frame(root, bg='#99ccff', bd=4)
+frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.8, anchor='n')
+
+#frame1 entry box
+entry = tk.Entry(frame, font=40)
+entry.place(relx=0.02, rely=0.06, relwidth=0.65, relheight=0.08)
+
+#Frame1 button
+button = tk.Button(frame, text="Get The Weather", font=70, command=lambda: get_weather(entry.get()))
+button.place(relx=0.7, rely=0.06, relheight=0.08, relwidth=0.3)
+
+
+#get joke
+entry2 = tk.Entry(frame, font=40)
+entry2.place(relx=0.02, rely=0.85, relwidth=0.65, relheight=0.1)
+
+button2 = tk.Button(frame, text="Get A Joke", font=70, command=lambda: get_joke(entry2.get()))
+button2.place(relx=0.68, rely=0.85, relheight=0.1, relwidth=0.3)
+
+
+#popular cities
+popcity = tk.Label(frame,bg='white', text='Popular Cities', font=70)
+popcity.place(relx=0.7,rely=0.2,relwidth=.25,relheight=.08)
+
+city1=tk.Button(frame,text='Cleveland,OH',font=70,command= lambda: get_weather('cleveland'))
+city1.place(relx=0.7,rely=0.3,relwidth=.25,relheight=.08)
+
+city2=tk.Button(frame,text='London,UK', font=70,command=lambda: get_weather('London,UK'))
+city2.place(relx=0.7,rely=0.4,relwidth=.25,relheight=.08)
+
+city3=tk.Button(frame,text='Paris France', font=70,command=lambda: get_weather('Paris, France'))
+city3.place(relx=0.7,rely=0.5,relwidth=.25,relheight=.08)
+
+city4=tk.Button(frame,text='New York', font=70,command=lambda: get_weather('New York'))
+city4.place(relx=0.7,rely=0.6,relwidth=.25,relheight=.08)
+
+city5=tk.Button(frame,text='San Francisco', font=70,command=lambda: get_weather('San Francisco'))
+city5.place(relx=0.7,rely=0.7,relwidth=.25,relheight=.08)
+
+#label to show weather
+label = tk.Label(frame,bg='white')
+label.config(font=("Courier", 20))
+label.place( relx=0.02, rely=0.2,relwidth=0.65, relheight=.6)
+
+root.mainloop() #to run app
