@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 '''
 India Wesley
@@ -7,13 +8,22 @@ Gloria Sladek
 '''
 
 #import tkinter as tk
+import pandas as pd
 import tkinter as tk 
-
+from time import sleep
+import tkinter as tk 
 import requests
+import random
 
 #Window size
-HEIGHT = 570
-WIDTH = 950
+HEIGHT = 850
+WIDTH = 850
+
+#defining variables
+
+jokeType = "none"
+root_color = '#c5e6e8'
+frame_color ='#8fd8e8'
 
 # key: 0eb79d7da8b67e9c12a8515317c40f70
 
@@ -24,9 +34,9 @@ def format_response(weather):
 		desc = weather['weather'][0]['description']
 		temp = weather['main']['temp']
 
-		final_str = 'City: %s \nConditions: %s \nTemperature (°F): %s' % (name, desc, temp)
+		final_str = 'City: %s \nConditions: %s \nTemperature(°F): %s' % (name, desc, temp)
 	except:
-		final_str = 'There was a problem getting that information'
+		final_str = 'There was a problem \n getting that information'
 
 	return final_str
 
@@ -39,47 +49,69 @@ def get_weather(city):
 	weather = response.json()
 
 	label['text'] = format_response(weather)
+            
+def answerLabel():
+    SEED = 247
+    
+    answer = answerList1
+    random.seed(SEED)
+    random.shuffle(answerList1)
+    label3['text'] = answer[0]
 
+def get_Weather_Joke(jokeType):
+        if jokeType == "weather":
+            SEED = 247
 
-def get_joke(city):
-    print("Button Pressed. No Jokes Here.")
+            joke = jokeList1
+            random.seed(SEED)
+            random.shuffle(jokeList1)
+            
+            label2['text'] = joke[0], "\n", 
+            root.after(4000, answerLabel)
+            
+        else:
+            label2['text'] = "issue getting jokes"
 
 #root window for placing everything
-root = tk.Tk()
+rootmain = tk.Tk()
 
 #Bigger window to work with
-canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
+canvas = tk.Canvas(rootmain, height=HEIGHT, width=WIDTH)
 canvas.pack()
 
-#background_image = tk.PhotoImage(file='wall_FC5.png')
-#background_label = tk.Label(root, image=background_image)
-#background_label.place(relwidth=1, relheight=1)
-
-
+root = tk.Frame(rootmain, bg = root_color)
+root.place(relheight = 1, relwidth = 1)
 
 #Frame1
-frame = tk.Frame(root, bg='#99ccff', bd=4)
-frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.8, anchor='n')
+frame = tk.Frame(root, bg=frame_color, bd=4)
+frame.place(relx=0.5, rely=0.15, relwidth=0.86, relheight=0.75, anchor='n')
 
-#frame1 entry box
-entry = tk.Entry(frame, font=40)
-entry.place(relx=0.02, rely=0.06, relwidth=0.65, relheight=0.08)
+#Frame to hold jokes and answers
+jframe = tk.Frame(frame, bg = frame_color)
+jframe.place(relx = .02, rely = .9, relheight = .08, relwidth = 1)
 
-#Frame1 button
-button = tk.Button(frame, text="Get The Weather", font=70, command=lambda: get_weather(entry.get()))
-button.place(relx=0.7, rely=0.06, relheight=0.08, relwidth=0.3)
-
+#weather entry box
+entry = tk.Entry(frame, font=40, bg = "white")
+entry.place(relx=0.02, rely=0.2, relwidth=0.3, relheight=0.08)
 
 #get joke
-entry2 = tk.Entry(frame, font=40)
-entry2.place(relx=0.02, rely=0.85, relwidth=0.65, relheight=0.1)
+entry2 = tk.Entry(frame, font=40, bg = "white")
+entry2.place(relx=0.02, rely=0.8, relwidth=0.3, relheight=0.08)
 
-button2 = tk.Button(frame, text="Get A Joke", font=70, command=lambda: get_joke(entry2.get()))
-button2.place(relx=0.68, rely=0.85, relheight=0.1, relwidth=0.3)
+#binding enter key to the relative entry boxes
+entry.bind("<Return>",lambda e: get_weather(entry.get()))
+entry2.bind("<Return>",lambda e: get_Weather_Joke(entry2.get()))
 
+#weather button
+button = tk.Button(frame, text="Get The Weather", font=70, command=lambda: get_weather(entry.get()))
+button.place(relx=0.35, rely=0.2, relheight=0.08, relwidth=0.3)
+
+button2 = tk.Button(frame, text="Get A Joke", font=70, command=lambda: get_Weather_Joke(entry2.get()))
+button2.place(relx=0.35, rely=0.8, relheight=0.08, relwidth=0.3)
 
 #popular cities
-popcity = tk.Label(frame,bg='white', text='Popular Cities', font=70)
+popcity = tk.Label(frame,bg=frame_color, text='Popular Cities', font=70)
+popcity.config(font = ("Comic Sans MS",15, "bold", "italic"))
 popcity.place(relx=0.7,rely=0.2,relwidth=.25,relheight=.08)
 
 city1=tk.Button(frame,text='Cleveland,OH',font=70,command= lambda: get_weather('cleveland'))
@@ -97,9 +129,53 @@ city4.place(relx=0.7,rely=0.6,relwidth=.25,relheight=.08)
 city5=tk.Button(frame,text='San Francisco', font=70,command=lambda: get_weather('San Francisco'))
 city5.place(relx=0.7,rely=0.7,relwidth=.25,relheight=.08)
 
+#title
+title = tk.Label(root,bg = root_color, text = "FUN WEATHER")
+title.config(font = ("Comic Sans MS", 30, "bold"))
+title.place(relwidth = .7, relheight = .1, rely = .02, relx = .3, anchor= 'n')
+
+#background changer
+
+blabel = tk.Label(root, bg=root_color, text="Background Color:")
+blabel.config(font=("Sans", 12))
+blabel.place(relx=.6,rely=0.02,relwidth=0.2,relheight=.05)
+
+#instructions
+
+Inst = tk.Label(frame, bg=frame_color, text = "Type in any city and hit the 'Enter' key  \n or select from our list of popular cities!")
+Inst.config(font = ("Comic Sans MS", 18))
+Inst.place(relwidth = 1, relheight = .15, rely = .02 )
+
+#Joke instructions 
+Inst2 = tk.Label(frame, bg=frame_color, text = "Choose a catagory and hit the 'Enter' key  \n Catagories: Weather, Programing, Videogames")
+Inst2.config(font = ("Comic Sans MS", 14))
+Inst2.place(relwidth = .65, relheight = .15, rely = .65, relx = .03 )             
 #label to show weather
 label = tk.Label(frame,bg='white')
-label.config(font=("Courier", 20))
-label.place( relx=0.02, rely=0.2,relwidth=0.65, relheight=.6)
+label.config(font=("Sans",20))
+label.place( relx=0.02, rely=0.34,relwidth=0.65, relheight=.3)
 
-root.mainloop() #to run app
+#Label to show joke
+label2 = tk.Label(jframe,bg='white')
+label2.config(font = ("Sans",18))
+label2.place(relwidth = .4, relheight = 1)
+
+#Lable that shows answer
+label3 = tk.Label(jframe, bg='white')
+label3.config(font = ("Sans",18))
+label3.place(relwidth = .4, relheight = 1, relx = .4)
+
+#drop down for color changer
+
+#reading in data from the CSV file titled “jokesList1.csv”
+jokes = pd.read_csv("jokeList1.csv")
+
+#updateing list
+jokeList1 = jokes['jokes1'].tolist()
+answerList1 = jokes['answers1'].tolist()
+
+rootmain.mainloop() #to run app
+
+
+
+
