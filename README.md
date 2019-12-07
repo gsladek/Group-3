@@ -1,9 +1,10 @@
 # Group-3
 
-Anna Baron
-Andrew Smith
-nick
-India
+Anna Baron,
+Andrew Smith,
+nick Pelka,
+India Wesley,
+Gloria Sladek
 
 This program will show the user the current weather from anywhere in the world.
 The user can see the weather in a specific location by typing it in or selecting a city from a list of popular cities.
