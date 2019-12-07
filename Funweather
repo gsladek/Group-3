@@ -5,6 +5,10 @@ Created on Thu Dec  5 19:49:52 2019
 
 India Wesley
 Gloria Sladek
+Andrew Smith
+Anna Baron
+Nick Pelka
+
 003
 12/05/19
 
@@ -190,14 +194,9 @@ city5.place(relx=0.7,rely=0.6,relwidth=.25,relheight=.08)
 
 
 #App Title
-title = tk.Label(root,bg = root_color, text = "FUN WEATHER")
+title = tk.Label(root,bg = root_color, text = "FUN WEATHER", relief = 'solid')
 title.config(font = ("Comic Sans MS", 30, "bold"))
-title.place(relwidth = .9, relheight = .1, rely = .00, relx = .3, anchor= 'n')
-
-#Background changer
-blabel = tk.Label(root, bg=root_color, text="Background Color:")
-blabel.config(font=("Sans", 12))
-blabel.place(relx=.6,rely=0.02,relwidth=0.2,relheight=.05)
+title.place(relwidth = .5, relheight = .1, rely = .00, relx = .5, anchor= 'n')
 
 
 
@@ -230,11 +229,6 @@ label3.place(relwidth = .95, relheight = .42, rely= 0.56)
 
 
 
-#Drop down for color changer
-
-
-
-
 #Reading in data from the CSV file titled “jokesList1.csv”
 jokes1 = pd.read_csv("jokeList1.csv")
 
@@ -255,7 +249,5 @@ jokes3 = pd.read_csv("jokeList3.csv")
 #Assigning joke3 and answer3 CSV files to lists
 jokeList3 = jokes3['jokes3'].tolist()
 answerList3 = jokes3['answers3'].tolist()
-
-
 
 rootmain.mainloop() #to run app
